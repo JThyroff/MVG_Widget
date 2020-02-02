@@ -1,7 +1,8 @@
 import mvg_api
-import json
 from datetime import datetime
 
+
+# TODO TRAM
 
 def print_bus(connection):
     _dest = connection["destination"]
