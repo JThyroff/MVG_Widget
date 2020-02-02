@@ -3,71 +3,87 @@ import json
 from datetime import datetime
 
 
-def print_bus():
+def print_bus(connection):
+    _dest = connection["destination"]
+    _label = connection["label"]
+    print("label: ", _label)
+    print("Destination: ", _dest)
+    print("--------------------")
     return
 
 
-def print_bahn():
-    pass
+def print_sbahn(connection):
+    _dest = connection["destination"]
+    _label = connection["label"]
+    print("label: ", _label)
+    print("Destination: ", _dest)
+    print("--------------------")
+    return
 
 
-def print_sbahn():
-    pass
+def print_ubahn(connection):
+    _dest = connection["destination"]
+    _label = connection["label"]
+    print("label: ", _label)
+    print("Destination: ", _dest)
+    print("--------------------")
+    return
 
 
-def print_ubahn():
-    pass
+def print_bahn(connection):
+    _dest = connection["destination"]
+    _trainType = connection["trainType"]
+    _label = connection["label"]
+    print("Traintype + label: ", _trainType, _label)
+    print("Destination: ", _dest)
+    print("--------------------")
+    return
 
 
 def print_foot_way(connection):
-    _from = connection["from"]["name"]
-    _to = connection["to"]["name"]
-    print("Footway")
-    print("From: ", _from)
-    print("To: ", _to)
+    print("--------------------")
     return
 
 
 switcher = {
     "BUS": print_bus,
-    "BAHN": print_bahn,
+    "REGIONAL_BUS": print_bus,
     "SBAHN": print_sbahn,
     "UBAHN": print_ubahn,
+    "BAHN": print_bahn,
     "FOOTWAY": print_foot_way,
 }
 
 
 def print_connection(connection):
-    connectionType = connection["connectionPartType"]
-    printFunc = switcher.get(connectionType)
-    printFunc()
+    _connection_type = connection["connectionPartType"]
+    _from = connection["from"]["name"]
+    _to = connection["to"]["name"]
+
+    # print("Connection Type: ", _connection_type)
+    print("From: ", _from)
+    print("To: ", _to)
+    _switch_var = "FOOTWAY"
+    if _connection_type == "TRANSPORTATION":
+        _switch_var = connection["product"]
+    printFunc = switcher.get(_switch_var)
+    print(_switch_var)
+    printFunc(connection)
 
 
-def print_connection_list(connectionlist):
-    _from = connectionlist["from"]["name"]
-    _to = connectionlist["to"]["name"]
+def print_route(route):
+    _from = route["from"]["name"]
+    _to = route["to"]["name"]
     print("from: ", _from)
     print("to: ", _to)
-    _prod = connectionlist["connectionPartList"][0]["product"]
-    print("product: ", _prod)
-    if _prod == "SBAHN":
-        # SBAHN MODE
-        _dest = connectionlist["connectionPartList"][0]["destination"]
-        _label = connectionlist["connectionPartList"][0]["label"]
-        print("label: ", _label)
-        print("Destination: ", _dest)
-    elif _prod == "BAHN":
-        # REGIO MODE
-        _dest = connectionlist["connectionPartList"][0]["destination"]
-        _trainType = connectionlist["connectionPartList"][0]["trainType"]
-        _label = connectionlist["connectionPartList"][0]["label"]
-        print("Traintype + label: ", _trainType, _label)
-        print("Destination: ", _dest)
-        # Fußweg ignorieren
+    _connection_part_list = route["connectionPartList"]
 
-    _departure = connectionlist["departure_datetime"]
+    for _connection in _connection_part_list:
+        print_connection(_connection)
+
+    _departure = route["departure_datetime"]
     print("Departure: ", _departure)
-    _arrival = connectionlist["arrival_datetime"]
+    _arrival = route["arrival_datetime"]
     print("Arrival: ", _arrival)
     return
 
@@ -76,13 +92,15 @@ def test():
     now = datetime.now()
     # for debug proposes
     now = datetime(2020, 2, 2, 19, 30, 0, 0)
-    testStation = mvg_api.get_id_for_station('Königsplatz')
-    münchen = mvg_api.get_id_for_station('München Hauptbahnhof')
-    # idd = 'de:09174:6800'
-    routes = mvg_api.get_route(testStation, münchen, now)
+    testStart = mvg_api.get_id_for_station('Forschungszentrum')
+    testDest = mvg_api.get_id_for_station('Oberschleißheim')
+    print("ID testStart: ", testStart)
+    print("ID testDest: ", testDest)
+    print("\n")
+    routes = mvg_api.get_route(testStart, testDest, now)
     for e in routes:
         print(e)
-        print_connection_list(e)
+        print_route(e)
         print("\n")
     return
 
