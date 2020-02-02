@@ -35,10 +35,10 @@ def test():
     now = datetime.now()
     # for debug proposes
     # now = datetime(2020, 2, 2, 19, 30, 0, 0)
-    dachau = mvg_api.get_id_for_station('Dachau')
+    freising = mvg_api.get_id_for_station('Freising')
     münchen = mvg_api.get_id_for_station('München Hauptbahnhof')
     # idd = 'de:09174:6800'
-    routes = mvg_api.get_route(dachau, münchen, now)
+    routes = mvg_api.get_route(freising, münchen, now)
     for e in routes:
         printConnection(e)
         print("\n")
