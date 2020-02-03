@@ -2,8 +2,6 @@ import mvg_api
 from datetime import datetime
 
 
-# TODO TRAM
-
 def print_bus(connection):
     _dest = connection["destination"]
     _label = connection["label"]
@@ -23,6 +21,15 @@ def print_sbahn(connection):
 
 
 def print_ubahn(connection):
+    _dest = connection["destination"]
+    _label = connection["label"]
+    print("label: ", _label)
+    print("Destination: ", _dest)
+    print("--------------------")
+    return
+
+
+def print_tram(connection):
     _dest = connection["destination"]
     _label = connection["label"]
     print("label: ", _label)
@@ -51,6 +58,7 @@ switcher = {
     "REGIONAL_BUS": print_bus,
     "SBAHN": print_sbahn,
     "UBAHN": print_ubahn,
+    "TRAM": print_tram,
     "BAHN": print_bahn,
     "FOOTWAY": print_foot_way,
 }
@@ -94,7 +102,7 @@ def test():
     # for debug proposes
     now = datetime(2020, 2, 2, 19, 30, 0, 0)
     testStart = mvg_api.get_id_for_station('Forschungszentrum')
-    testDest = mvg_api.get_id_for_station('Oberschleißheim')
+    testDest = mvg_api.get_id_for_station('Ottostraße')
     print("ID testStart: ", testStart)
     print("ID testDest: ", testDest)
     print("\n")
