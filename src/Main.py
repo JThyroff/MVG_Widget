@@ -1,6 +1,8 @@
 import mvg_api
 from datetime import datetime
 
+from src.GUI import MvgWidgetApp
+
 
 def print_bus(connection):
     _dest = connection["destination"]
@@ -116,3 +118,5 @@ def test():
 
 if __name__ == '__main__':
     test()
+    hello_kivy = MvgWidgetApp()
+    hello_kivy.run()
