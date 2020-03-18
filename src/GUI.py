@@ -1,21 +1,27 @@
 import kivy
 
-kivy.require('1.11.0')
+from time import time
 
 from kivy.app import App
-from kivy.uix.button import Label
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.properties import NumericProperty
+
+kivy.require('1.11.0')
+
+# evtl nachher True oder 'auto'
+Window.fullscreen = False
 
 
-# Inherit Kivy's App class which represents the window
-# for our widgets
-# HelloKivy inherits all the fields and methods
-# from Kivy
 class MvgWidgetApp(App):
+    time = NumericProperty(0)
 
-    # This returns the content we want in the window
     def build(self):
-        # Return a label widget with Hello Kivy
-        # The name of the kv file has to be mvgwidget
-        # minus the app part from this class to
-        # match up properly
-        return Label()
+        Clock.schedule_interval(self._update_clock, 1 / 60.)
+
+    def _update_clock(self, dt):
+        self.time = time()
+
+    def add_entry(self):
+
+        pass
