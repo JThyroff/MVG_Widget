@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: mvg-api
+Version: 1.2.2
+Summary: Library for fetching departure and route data from the Munich public transport organisation MVG
+Home-page: https://github.com/leftshift/python_mvg_api
+Author: leftshift
+Author-email: leftshiftlp@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+# python_mvg_api
+
+A library for fetching departures, routes and service interruptions from Munich Transport Authority MVG, using the newer JSON-api on mvg.de
+
+## Get it on pypi:
+`pip install mvg-api`
+
+
+Then, `import mvg_api`.
+
+To get the id for a particular Station, use something like `mvg_api.get_id_for_station("Hauptbahnhof")`.
+
+You can use this id for getting departures with `mvg_api.get_departures(6)` and use it as the start or end of a route.
+
+## Documentation
+[Read the Documentation](http://python-mvg-departures.readthedocs.io/en/latest/?)
+
+

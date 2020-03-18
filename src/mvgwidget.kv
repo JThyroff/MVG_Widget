@@ -1,7 +1,8 @@
-ScreenManager:
+<MyScreen>:
     id: sm
 
     Screen:
+        id: screen1
         name: 'screen1'
         canvas.before:
             Color:
@@ -10,17 +11,17 @@ ScreenManager:
                 size: self.size
                 
         BoxLayout:
-            id:bl
+            id: bl
             name:'bl'
             orientation: 'vertical'
             padding: 20
             spacing: 10
-            
+
             Button:
                 size_hint: None, None
                 size: '170dp', '48dp'
                 text: 'Add Entry'
-                on_release: 
+                on_release: root.add_entry()
 
             Button:
                 size_hint: None, None
@@ -29,6 +30,7 @@ ScreenManager:
                 on_release: sm.current = 'screen2'
 
     Screen:
+        id: screen2
         name: 'screen2'
         canvas.before:
             Color:

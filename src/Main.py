@@ -87,6 +87,7 @@ def print_route(route):
     _to = route["to"]["name"]
     print("from: ", _from)
     print("to: ", _to)
+    print("---------------------")
     _connection_part_list = route["connectionPartList"]
 
     for _connection in _connection_part_list:
@@ -102,9 +103,9 @@ def print_route(route):
 def test():
     now = datetime.now()
     # for debug proposes
-    now = datetime(2020, 2, 2, 19, 30, 0, 0)
+    # now = datetime(2020, 2, 2, 19, 30, 0, 0)
     testStart = mvg_api.get_id_for_station('Forschungszentrum')
-    testDest = mvg_api.get_id_for_station('Ottostraße')
+    testDest = mvg_api.get_id_for_station('Garching-Hochbrück')
     print("ID testStart: ", testStart)
     print("ID testDest: ", testDest)
     print("\n")

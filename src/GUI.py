@@ -6,6 +6,11 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.image import Image
+from kivy.uix.label import Label
+from kivy.uix.screenmanager import ScreenManager
 
 kivy.require('1.11.0')
 
@@ -13,15 +18,30 @@ kivy.require('1.11.0')
 Window.fullscreen = False
 
 
+class MyEntry(BoxLayout):
+    pass
+
+
+class MyScreen(ScreenManager):
+
+    def get_by_id(self, p_id):
+        return self.ids.get(p_id)
+
+    def add_entry(self):
+        print('Test')
+        myEntry = MyEntry()
+        myBox = self.get_by_id('bl')
+        print(myBox)
+        print(myBox.name)
+        pass
+
+
 class MvgWidgetApp(App):
     time = NumericProperty(0)
 
     def build(self):
         Clock.schedule_interval(self._update_clock, 1 / 60.)
+        return MyScreen()
 
     def _update_clock(self, dt):
         self.time = time()
-
-    def add_entry(self):
-
-        pass
