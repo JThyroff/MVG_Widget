@@ -11,6 +11,7 @@ from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.widget import Widget
 
 kivy.require('1.11.0')
 
@@ -24,7 +25,7 @@ class MyEntry(BoxLayout):
 
 class MyScreen(ScreenManager):
 
-    def get_by_id(self, p_id):
+    def get_by_id(self, p_id)-> Widget:
         return self.ids.get(p_id)
 
     def add_entry(self):
@@ -33,6 +34,7 @@ class MyScreen(ScreenManager):
         myBox = self.get_by_id('bl')
         print(myBox)
         print(myBox.name)
+        myBox.add_widget(myEntry)
         pass
 
 
