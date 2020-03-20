@@ -1,0 +1,14 @@
+
+<MyEntry@BoxLayout>:
+    orientation:'horizontal'
+    padding:20
+    spacing:10
+
+    Image:
+        size: self.texture_size
+        id: 'img'
+        source: 'sbahn_Transparent.png'
+    Label:
+        id: 'lbl'
+        # text:"[size=60][color=55bb33]SBahn[/color][/size]"
+        markup: True
