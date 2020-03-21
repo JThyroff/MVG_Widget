@@ -8,25 +8,38 @@ start_str = 'Forschungszentrum'
 destination_str = 'Garching-Hochbrück'
 
 
-def get_std(connection)->:
-    pass
+def get_std_label(my_entry: MyEntry, connection):
+    my_entry.destination = connection["destination"]
+    my_entry.label = connection["label"]
+
+
+def get_bahn_label(my_entry: MyEntry, connection):
+    my_entry.destination = connection["destination"]
+    my_entry.label = connection["trainType"] + ' ' + connection["label"]
+
+
+def get_foot_label(my_entry: MyEntry, connection):
+    my_entry.destination = my_entry.to_
+    my_entry.label = 'Zu Fuß'
+
 
 switcher = {
-    "BUS": print_bus,
-    "REGIONAL_BUS": print_bus,
-    "SBAHN": print_sbahn,
-    "UBAHN": print_ubahn,
-    "TRAM": print_tram,
-    "BAHN": print_bahn,
-    "FOOTWAY": print_foot_way,
+    "BUS": get_std_label,
+    "REGIONAL_BUS": get_std_label,
+    "SBAHN": get_std_label,
+    "UBAHN": get_std_label,
+    "TRAM": get_std_label,
+    "BAHN": get_bahn_label,
+    "FOOTWAY": get_foot_label,
 }
 
-def process_connection(connection):
+
+def process_connection(my_entry: MyEntry, connection):
     _connection_type = connection["connectionPartType"]
-    _switch_var = "FOOTWAY"
+    my_entry.connection_type = "FOOTWAY"
     if _connection_type == "TRANSPORTATION":
-        _switch_var = connection["product"]
-    get_transportation_label = switcher.get(_switch_var)
+        my_entry.connection_type = connection["product"]
+    get_transportation_label = switcher.get(my_entry.connection_type)
     lbl = get_transportation_label(connection)
     pass
 
@@ -34,14 +47,14 @@ def process_connection(connection):
 def process_route(route) -> MyEntry:
     to_return = MyEntry()
     # should be the same as _start and _dest
-    _from = route["from"]["name"]
-    _to = route["to"]["name"]
+    to_return.from_ = route["from"]["name"]
+    to_return.to_ = route["to"]["name"]
     #
     _connection_part_list = route["connectionPartList"]
     # nur die erste Verbindung ist interessant
-    process_connection(_connection_part_list[0])
-    _departure = route["departure_datetime"]
-    _arrival = route["arrival_datetime"]
+    process_connection(to_return, _connection_part_list[0])
+    to_return.departure = route["departure_datetime"]
+    to_return.arrival = route["arrival_datetime"]
     return to_return
 
 

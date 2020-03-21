@@ -105,7 +105,7 @@ def test():
     # for debug proposes
     # now = datetime(2020, 2, 2, 19, 30, 0, 0)
     testStart = mvg_api.get_id_for_station('Forschungszentrum')
-    testDest = mvg_api.get_id_for_station('Garching-Hochbrück')
+    testDest = mvg_api.get_id_for_station('Hauptbahnhof')
     print("ID testStart: ", testStart)
     print("ID testDest: ", testDest)
     print("\n")

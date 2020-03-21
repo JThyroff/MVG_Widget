@@ -24,8 +24,9 @@ class MyEntry:
     label = None
     img_path = None
     destination = None
-    _from = None
-    _to = None
+    from_ = None
+    to_ = None
+    connection_type = None
     departure = None
     arrival = None
 
