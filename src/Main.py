@@ -118,6 +118,6 @@ def test():
 
 
 if __name__ == '__main__':
-    # test()
+    test()
     hello_kivy = MvgWidgetApp()
     hello_kivy.run()

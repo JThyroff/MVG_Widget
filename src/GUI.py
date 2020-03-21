@@ -19,7 +19,6 @@ kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
 
-
 class MyScreen(ScreenManager):
 
     def get_by_id(self, p_id) -> Widget:
