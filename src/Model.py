@@ -45,11 +45,15 @@ label_switcher = {
     "FOOTWAY": get_foot_label,
 }
 
+
 def process_connection(my_entry: MyEntry, connection):
-    _connection_type = connection["connectionPartType"]
+    _c_part_type = connection["connectionPartType"]
     my_entry.connection_type = "FOOTWAY"
-    if _connection_type == "TRANSPORTATION":
+    if _c_part_type == "TRANSPORTATION":
         my_entry.connection_type = connection["product"]
+    # set image path
+    my_entry.img_path = res_path + resources_dict.get(my_entry.connection_type)
+    # set label
     get_transportation_label = label_switcher.get(my_entry.connection_type)
     get_transportation_label(my_entry, connection)
 
