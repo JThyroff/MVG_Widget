@@ -7,6 +7,18 @@ from GUI import MyEntry
 start_str = 'Forschungszentrum'
 destination_str = 'Garching-Hochbrück'
 
+res_path = '../res/'
+
+resources_dict = {
+    "BUS": 'bus.png',
+    "REGIONAL_BUS": 'bus.png',
+    "SBAHN": 'sbahn.png',
+    "UBAHN": 'ubahn.png',
+    "TRAM": 'tram.png',
+    "BAHN": 'bahn.png',
+    "FOOTWAY": 'walk.png',
+}
+
 
 def get_std_label(my_entry: MyEntry, connection):
     my_entry.destination = connection["destination"]
@@ -23,7 +35,7 @@ def get_foot_label(my_entry: MyEntry, connection):
     my_entry.label = 'Zu Fuß'
 
 
-switcher = {
+label_switcher = {
     "BUS": get_std_label,
     "REGIONAL_BUS": get_std_label,
     "SBAHN": get_std_label,
@@ -33,15 +45,13 @@ switcher = {
     "FOOTWAY": get_foot_label,
 }
 
-
 def process_connection(my_entry: MyEntry, connection):
     _connection_type = connection["connectionPartType"]
     my_entry.connection_type = "FOOTWAY"
     if _connection_type == "TRANSPORTATION":
         my_entry.connection_type = connection["product"]
-    get_transportation_label = switcher.get(my_entry.connection_type)
-    lbl = get_transportation_label(connection)
-    pass
+    get_transportation_label = label_switcher.get(my_entry.connection_type)
+    get_transportation_label(my_entry, connection)
 
 
 def process_route(route) -> MyEntry:
@@ -65,4 +75,3 @@ def get_next_departures():
     _routes = mvg_api.get_route(_start, _dest, _now)
     for c in range(2):
         process_route(_routes[c])
-        pass

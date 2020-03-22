@@ -42,7 +42,7 @@ class MyScreen(ScreenManager):
         # add Image
         img = Image()
         img.id = 'img'
-        img.source = 'sbahn.png'
+        img.source = '../res/regio.png'
         img.size = img.texture_size
         myEntry.add_widget(img)
         # add Label
