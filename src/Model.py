@@ -5,8 +5,8 @@ import mvg_api
 
 from GUI import MyEntry
 
-start_str = 'Forschungszentrum'
-destination_str = 'Garching-Hochbrück'
+start_str = 'Dachau'
+destination_str = 'Puchheim Bahnhof'
 
 res_path = '../res/'
 
@@ -71,6 +71,10 @@ def process_route(route) -> MyEntry:
     to_return.departure = route["departure_datetime"]
     to_return.arrival = route["arrival_datetime"]
     return to_return
+
+
+def get_route() -> str:
+    return start_str + ' >> ' + destination_str
 
 
 def get_next_departures() -> List[MyEntry]:

@@ -9,19 +9,26 @@
                 rgb: .2, .2, .2
             Rectangle:
                 size: self.size
-                
+
         BoxLayout:
-            id: bl
-            name:'bl'
+            id: vxv
+            name: 'vxv'
             orientation: 'vertical'
             padding: 20
             spacing: 10
+
+            BoxLayout:
+                id: bl
+                name:'bl'
+                orientation: 'vertical'
+                padding: 20
+                spacing: 10
 
             Button:
                 size_hint: None, None
                 size: '170dp', '48dp'
                 text: 'Add Entry'
-                on_release: root.add_entry()
+                # on_release: root.add_entry()
 
             Button:
                 size_hint: None, None

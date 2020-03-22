@@ -14,6 +14,8 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.widget import Widget
 from datetime import datetime
 
+import Model
+
 kivy.require('1.11.0')
 
 # evtl nachher True oder 'auto'
@@ -36,33 +38,49 @@ class MyScreen(ScreenManager):
     def get_by_id(self, p_id) -> Widget:
         return self.ids.get(p_id)
 
-    def add_entry(self):
-        myBox = self.get_by_id('bl')
-        myEntry = BoxLayout(orientation='horizontal', padding=20, spacing=10)
+    def add_entry(self, my_entry: MyEntry):
+        _my_box = self.get_by_id('bl')
+        new_entry = BoxLayout(orientation='horizontal', padding=20, spacing=10)
         # add Image
         img = Image()
         img.id = 'img'
-        img.source = '../res/regio.png'
+        img.source = my_entry.img_path
         img.size = img.texture_size
-        myEntry.add_widget(img)
+        new_entry.add_widget(img)
         # add Label
-        lbl = Label()
-        lbl.id = 'lbl'
-        lbl.markup = True
-        lbl.text = '[size=60][color=55bb33]SBahn {}[/color][/size]'.format(datetime.now())
-        myEntry.add_widget(lbl)
+        _lbl = Label()
+        _lbl.id = '_lbl'
+        _lbl.markup = True
+        _lbl.text = '[size=40][color=55bb33]SBahn {}[/color][/size]'.format(my_entry.departure)
+        new_entry.add_widget(_lbl)
 
-        # myEntry = MyEntry()
-        myBox.add_widget(myEntry, 2)
+        _my_box.add_widget(new_entry, 2)
         pass
+
+    def add_route(self, route: str):
+        _my_box = self.get_by_id('vxv')
+        _lbl = Label()
+        _lbl.id = 'lbl'
+        _lbl.markup = True
+        _lbl.text = '[size=30][color=44eeee]{}[/color][/size]'.format(route)
+        _lbl.size_hint = (1, 0.000001)
+        _my_box.add_widget(_lbl, 4)
 
 
 class MvgWidgetApp(App):
     time = NumericProperty(0)
+    screen: MyScreen = None
 
     def build(self):
         Clock.schedule_interval(self._update_clock, 1 / 60.)
-        return MyScreen()
+        self.screen = MyScreen()
+        self.screen.add_route(Model.get_route())
+        _departures = Model.get_next_departures()
+        for el in _departures:
+            print(el)
+            self.screen.add_entry(el)
+
+        return self.screen
 
     def _update_clock(self, dt):
         self.time = time()
