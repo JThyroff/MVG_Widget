@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 import mvg_api
 
@@ -72,10 +73,12 @@ def process_route(route) -> MyEntry:
     return to_return
 
 
-def get_next_departures():
+def get_next_departures() -> List[MyEntry]:
     _now = datetime.now()
     _start = mvg_api.get_id_for_station(start_str)
     _dest = mvg_api.get_id_for_station(destination_str)
     _routes = mvg_api.get_route(_start, _dest, _now)
+    _list: List[MyEntry] = []
     for c in range(2):
-        process_route(_routes[c])
+        _list.append(process_route(_routes[c]))
+    return _list
