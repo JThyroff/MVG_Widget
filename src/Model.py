@@ -68,8 +68,8 @@ def process_route(route) -> MyEntry:
     _connection_part_list = route["connectionPartList"]
     # nur die erste Verbindung ist interessant
     process_connection(to_return, _connection_part_list[0])
-    to_return.departure = route["departure_datetime"]
-    to_return.arrival = route["arrival_datetime"]
+    to_return.departure = route["departure_datetime"].strftime("%H:%M")
+    to_return.arrival = route["arrival_datetime"].strftime("%H:%M")
     return to_return
 
 
@@ -83,6 +83,6 @@ def get_next_departures() -> List[MyEntry]:
     _dest = mvg_api.get_id_for_station(destination_str)
     _routes = mvg_api.get_route(_start, _dest, _now)
     _list: List[MyEntry] = []
-    for c in range(2):
+    for c in range(3):
         _list.append(process_route(_routes[c]))
     return _list
