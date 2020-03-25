@@ -5,7 +5,6 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
@@ -35,6 +34,7 @@ class MyEntry:
 class MyScreen(ScreenManager):
 
     def get_by_id(self, w_id) -> Widget:
+        # print(self.ids)
         return self.ids.get(w_id)
 
     def add_entry(self, my_entry: MyEntry):
@@ -72,14 +72,9 @@ class MyScreen(ScreenManager):
         _my_box.add_widget(new_entry, 0)
         pass
 
-    def add_route(self, route: str):
-        _my_box = self.get_by_id('outerBL')
-        _lbl = Label()
-        _lbl.id = 'route_lbl'
-        _lbl.markup = True
+    def set_route(self, route: str):
+        _lbl: Label = self.get_by_id('routeLbl')
         _lbl.text = routeStr.format(route)
-        _lbl.size_hint = (1, 0.000001)
-        _my_box.add_widget(_lbl, 4)
 
 
 class MvgWidgetApp(App):
@@ -88,8 +83,8 @@ class MvgWidgetApp(App):
 
     def build(self):
         self.screen = MyScreen()
-        Clock.schedule_interval(self._update, 60.)
-        self.screen.add_route(Model.get_route())
+        Clock.schedule_interval(self._update, 20)
+        self.screen.set_route(Model.get_route())
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
@@ -100,9 +95,7 @@ class MvgWidgetApp(App):
         print('updating data and view. ')
         self.time = time()
         # route update
-        _my_box: BoxLayout = self.screen.get_by_id('outerBL')
-        _my_lbl: Label = _my_box.ids.get('route_lbl')
-        _my_lbl.text = routeStr.format(Model.get_route())
+        self.screen.set_route(Model.get_route())
         # connection update
         self.screen.get_by_id('bl').clear_widgets()
         _departures = Model.get_next_departures()

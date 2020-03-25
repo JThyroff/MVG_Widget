@@ -1,7 +1,7 @@
-import mvg_api
 from datetime import datetime
 
-import Model
+import mvg_api
+
 from src.GUI import MvgWidgetApp
 
 
@@ -106,7 +106,7 @@ def test():
     # for debug proposes
     # now = datetime(2020, 2, 2, 19, 30, 0, 0)
     testStart = mvg_api.get_id_for_station('Dachau')
-    testDest = mvg_api.get_id_for_station('Puchheim Bahnhof')
+    testDest = mvg_api.get_id_for_station('Forschungszentrum')
     print("ID testStart: ", testStart)
     print("ID testDest: ", testDest)
     print("\n")
@@ -122,4 +122,3 @@ if __name__ == '__main__':
     # test()
     _mvgWidgetApp = MvgWidgetApp()
     _mvgWidgetApp.run()
-
