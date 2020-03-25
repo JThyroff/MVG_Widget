@@ -1,17 +1,14 @@
-import kivy
-
 from time import time
 
+import kivy
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.widget import Widget
 
@@ -21,6 +18,7 @@ kivy.require('1.11.0')
 
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
+routeStr: str = '[size=30][color=44eeee]{}[/color][/size]'
 
 
 class MyEntry:
@@ -36,8 +34,8 @@ class MyEntry:
 
 class MyScreen(ScreenManager):
 
-    def get_by_id(self, p_id) -> Widget:
-        return self.ids.get(p_id)
+    def get_by_id(self, w_id) -> Widget:
+        return self.ids.get(w_id)
 
     def add_entry(self, my_entry: MyEntry):
         _my_box = self.get_by_id('bl')
@@ -47,7 +45,7 @@ class MyScreen(ScreenManager):
         # add Image
         img = Image()
         img.id = 'img'
-        img.size_hint_x = 0.3
+        img.size_hint_x = 0.13
         img.source = my_entry.img_path
         img.size = img.texture_size
         img.pos_hint = {'x': 0, 'center_y': .5}
@@ -59,7 +57,7 @@ class MyScreen(ScreenManager):
         _lbl_lbl.size_hint_x = 0.3
         _lbl_lbl.markup = True
         _lbl_lbl.text = '[size=40][color=55bb33]{} {}[/color][/size]'.format(my_entry.label, my_entry.destination)
-        _lbl_lbl.pos_hint = {'center_x': .5, 'center_y': .5}
+        _lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
         new_entry.add_widget(_lbl_lbl)
 
         # add time Label
@@ -75,11 +73,11 @@ class MyScreen(ScreenManager):
         pass
 
     def add_route(self, route: str):
-        _my_box = self.get_by_id('vxv')
+        _my_box = self.get_by_id('outerBL')
         _lbl = Label()
-        _lbl.id = 'lbl'
+        _lbl.id = 'route_lbl'
         _lbl.markup = True
-        _lbl.text = '[size=30][color=44eeee]{}[/color][/size]'.format(route)
+        _lbl.text = routeStr.format(route)
         _lbl.size_hint = (1, 0.000001)
         _my_box.add_widget(_lbl, 4)
 
@@ -89,15 +87,24 @@ class MvgWidgetApp(App):
     screen: MyScreen = None
 
     def build(self):
-        Clock.schedule_interval(self._update_clock, 1 / 60.)
         self.screen = MyScreen()
+        Clock.schedule_interval(self._update, 60.)
         self.screen.add_route(Model.get_route())
         _departures = Model.get_next_departures()
         for el in _departures:
-            print(el)
             self.screen.add_entry(el)
 
         return self.screen
 
-    def _update_clock(self, dt):
+    def _update(self, dt):
+        print('updating data and view. ')
         self.time = time()
+        # route update
+        _my_box: BoxLayout = self.screen.get_by_id('outerBL')
+        _my_lbl: Label = _my_box.ids.get('route_lbl')
+        _my_lbl.text = routeStr.format(Model.get_route())
+        # connection update
+        self.screen.get_by_id('bl').clear_widgets()
+        _departures = Model.get_next_departures()
+        for el in _departures:
+            self.screen.add_entry(el)
