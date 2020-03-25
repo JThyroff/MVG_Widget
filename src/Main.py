@@ -105,12 +105,12 @@ def test():
     now = datetime.now()
     # for debug proposes
     # now = datetime(2020, 2, 2, 19, 30, 0, 0)
-    testStart = mvg_api.get_id_for_station('Dachau')
-    testDest = mvg_api.get_id_for_station('Forschungszentrum')
-    print("ID testStart: ", testStart)
-    print("ID testDest: ", testDest)
+    test_start = mvg_api.get_id_for_station('Dachau')
+    test_dest = mvg_api.get_id_for_station('Forschungszentrum')
+    print("ID test_start: ", test_start)
+    print("ID test_dest: ", test_dest)
     print("\n")
-    routes = mvg_api.get_route(testStart, testDest, now)
+    routes = mvg_api.get_route(test_start, test_dest, now)
     for e in routes:
         print(e)
         print_route(e)

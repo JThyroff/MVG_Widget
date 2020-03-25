@@ -56,7 +56,39 @@
             orientation: 'vertical'
             padding: 20
             spacing: 10
-            
+
+            FloatLayout:
+                Label:
+                    text: 'Start:'
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'top'
+                    size_hint: 1, 0.3
+                    pos_hint: {'x': 0, 'top': 1}
+
+                TextInput:
+                    id: start
+                    hint_text:'Start'
+                    size_hint: 1, 0.3
+                    pos_hint: {'x': 0, 'top': 0.9}
+                    background_color: (1,1,1,0.1) if self.focus else (0,0,0,0)
+                    foreground_color: (1, 1, 1, 1)
+
+                Label:
+                    text: 'Destination:'
+                    text_size: self.size
+                    halign: 'left'
+                    size_hint: 1, 0.3
+                    pos_hint: {'x': 0, 'y': 0.36}
+
+                TextInput:
+                    id: dest
+                    hint_text:'Destination'
+                    size_hint: 1, 0.3
+                    pos_hint: {'x': 0, 'y': 0}
+                    background_color: (1,1,1,0.1) if self.focus else (0,0,0,0)
+                    foreground_color: (1, 1, 1, 1)
+
             Label:
                 text: 'Progression: {}%'.format(int(pb.value))
                 size_hint_y: None
