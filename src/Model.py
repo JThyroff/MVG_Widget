@@ -83,6 +83,6 @@ def get_next_departures() -> List[MyEntry]:
     _dest = mvg_api.get_id_for_station(destination_str)
     _routes = mvg_api.get_route(_start, _dest, _now)
     _list: List[MyEntry] = []
-    for c in range(3):
+    for c in range(4):
         _list.append(process_route(_routes[c]))
     return _list

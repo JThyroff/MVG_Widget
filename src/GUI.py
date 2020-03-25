@@ -83,7 +83,7 @@ class MvgWidgetApp(App):
 
     def build(self):
         self.screen = MyScreen()
-        Clock.schedule_interval(self._update, 20)
+        Clock.schedule_interval(self._update, 60)
         self.screen.set_route(Model.get_route())
         _departures = Model.get_next_departures()
         for el in _departures:
