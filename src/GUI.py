@@ -41,14 +41,13 @@ class MyScreen(ScreenManager):
 
     def add_entry(self, my_entry: MyEntry):
         _my_box = self.get_by_id('bl')
-        print(_my_box.height)
         # new_entry = BoxLayout(orientation='horizontal', padding=20, spacing=10)
         new_entry = FloatLayout()
         new_entry.size_hint = (1, 1)
-        print(new_entry.size)
         # add Image
         img = Image()
         img.id = 'img'
+        img.size_hint_x = 0.3
         img.source = my_entry.img_path
         img.size = img.texture_size
         img.pos_hint = {'x': 0, 'center_y': .5}
@@ -57,6 +56,7 @@ class MyScreen(ScreenManager):
         # add label Label
         _lbl_lbl = Label()
         _lbl_lbl.id = '_lbl_lbl'
+        _lbl_lbl.size_hint_x = 0.3
         _lbl_lbl.markup = True
         _lbl_lbl.text = '[size=40][color=55bb33]{} {}[/color][/size]'.format(my_entry.label, my_entry.destination)
         _lbl_lbl.pos_hint = {'center_x': .5, 'center_y': .5}
@@ -65,6 +65,7 @@ class MyScreen(ScreenManager):
         # add time Label
         _time_lbl = Label()
         _time_lbl.id = '_time_lbl'
+        _time_lbl.size_hint_x = 0.3
         _time_lbl.markup = True
         _time_lbl.text = '[size=60][color=55bb33]{} >> {}[/color][/size]'.format(my_entry.departure, my_entry.arrival)
         _time_lbl.pos_hint = {'right': 1, 'center_y': .5}

@@ -6,7 +6,7 @@ import mvg_api
 from GUI import MyEntry
 
 start_str = 'Dachau'
-destination_str = 'Puchheim Bahnhof'
+destination_str = 'Forschungszentrum'
 
 res_path = '../res/'
 
@@ -16,7 +16,7 @@ resources_dict = {
     "SBAHN": 'sbahn.png',
     "UBAHN": 'ubahn.png',
     "TRAM": 'tram.png',
-    "BAHN": 'bahn.png',
+    "BAHN": 'regio.png',
     "FOOTWAY": 'walk.png',
 }
 
