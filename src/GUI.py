@@ -8,6 +8,7 @@ from kivy.core.window import Window
 from kivy.properties import NumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.relativelayout import RelativeLayout
@@ -40,16 +41,17 @@ class MyScreen(ScreenManager):
 
     def add_entry(self, my_entry: MyEntry):
         _my_box = self.get_by_id('bl')
+        print(_my_box.height)
         # new_entry = BoxLayout(orientation='horizontal', padding=20, spacing=10)
-        new_entry = RelativeLayout()
-        new_entry.padding = 20
-
+        new_entry = FloatLayout()
+        new_entry.size_hint = (1, 1)
+        print(new_entry.size)
         # add Image
         img = Image()
         img.id = 'img'
         img.source = my_entry.img_path
         img.size = img.texture_size
-        img.pos_hint = {'center_y': 0.5}
+        img.pos_hint = {'x': 0, 'center_y': .5}
         new_entry.add_widget(img)
 
         # add label Label
@@ -57,8 +59,7 @@ class MyScreen(ScreenManager):
         _lbl_lbl.id = '_lbl_lbl'
         _lbl_lbl.markup = True
         _lbl_lbl.text = '[size=40][color=55bb33]{} {}[/color][/size]'.format(my_entry.label, my_entry.destination)
-        # _lbl_lbl.pos_hint = {'right': 1}
-        # _lbl_lbl.size_hint = (0.0000001, 1)
+        _lbl_lbl.pos_hint = {'center_x': .5, 'center_y': .5}
         new_entry.add_widget(_lbl_lbl)
 
         # add time Label
@@ -66,6 +67,7 @@ class MyScreen(ScreenManager):
         _time_lbl.id = '_time_lbl'
         _time_lbl.markup = True
         _time_lbl.text = '[size=60][color=55bb33]{} >> {}[/color][/size]'.format(my_entry.departure, my_entry.arrival)
+        _time_lbl.pos_hint = {'right': 1, 'center_y': .5}
         new_entry.add_widget(_time_lbl)
 
         _my_box.add_widget(new_entry, 0)
