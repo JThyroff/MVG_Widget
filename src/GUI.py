@@ -87,8 +87,8 @@ class MvgWidgetApp(App):
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
-        self.config.get('My Label', 'text')
-        float(self.config.get('My Label', 'font_size'))
+        self.config.get('MVG Widget', 'text')
+        float(self.config.get('MVG Widget', 'font_size'))
         #
         self.screen = MyScreen()
         Clock.schedule_interval(self._update, 60)
@@ -104,13 +104,13 @@ class MvgWidgetApp(App):
         """
         Set the default values for the configs sections.
         """
-        config.setdefaults('My Label', {'text': 'Hello', 'font_size': 20})
+        config.setdefaults('MVG Widget', {'text': 'Hello', 'font_size': 20})
 
     def build_settings(self, settings):
         """
         Add our custom section to the default configuration object.
         """
-        settings.add_json_panel('My Label', self.config, 'settings.json')
+        settings.add_json_panel('MVG Widget', self.config, 'settings.json')
 
     def _update(self, dt):
         print('updating data and view. ')
