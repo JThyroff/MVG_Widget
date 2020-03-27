@@ -78,9 +78,9 @@ def print_connection(connection):
     _switch_var = "FOOTWAY"
     if _connection_type == "TRANSPORTATION":
         _switch_var = connection["product"]
-    printFunc = switcher.get(_switch_var)
+    print_func = switcher.get(_switch_var)
     print(_switch_var)
-    printFunc(connection)
+    print_func(connection)
 
 
 def print_route(route):

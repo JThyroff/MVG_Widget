@@ -1,6 +1,7 @@
 from time import time
 
 import kivy
+from kivy import Logger
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -9,12 +10,12 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.settings import SettingsWithTabbedPanel
 from kivy.uix.widget import Widget
 
 import Model
 
 kivy.require('1.11.0')
-
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
 routeStr: str = '[size=30][color=44eeee]{}[/color][/size]'
@@ -82,14 +83,34 @@ class MvgWidgetApp(App):
     screen: MyScreen = None
 
     def build(self):
+        self.settings_cls = MySettingsWithTabbedPanel
+        # settings and config
+        # root = Builder.load_string(kv)
+        # label = root.ids.label
+        self.config.get('My Label', 'text')
+        float(self.config.get('My Label', 'font_size'))
+        #
         self.screen = MyScreen()
         Clock.schedule_interval(self._update, 60)
+        # set content
         self.screen.set_route(Model.get_route())
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
 
         return self.screen
+
+    def build_config(self, config):
+        """
+        Set the default values for the configs sections.
+        """
+        config.setdefaults('My Label', {'text': 'Hello', 'font_size': 20})
+
+    def build_settings(self, settings):
+        """
+        Add our custom section to the default configuration object.
+        """
+        settings.add_json_panel('My Label', self.config, 'settings.json')
 
     def _update(self, dt):
         print('updating data and view. ')
@@ -101,3 +122,21 @@ class MvgWidgetApp(App):
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
+
+
+class MySettingsWithTabbedPanel(SettingsWithTabbedPanel):
+    """
+    It is not usually necessary to create subclass of a settings panel. There
+    are many built-in types that you can use out of the box
+    (SettingsWithSidebar, SettingsWithSpinner etc.).
+    You would only want to create a Settings subclass like this if you want to
+    change the behavior or appearance of an existing Settings class.
+    """
+
+    def on_close(self):
+        Logger.info("main.py: MySettingsWithTabbedPanel.on_close")
+
+    def on_config_change(self, config, section, key, value):
+        Logger.info(
+            "main.py: MySettingsWithTabbedPanel.on_config_change: "
+            "{0}, {1}, {2}, {3}".format(config, section, key, value))
