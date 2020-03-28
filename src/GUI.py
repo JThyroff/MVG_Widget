@@ -87,7 +87,8 @@ class MvgWidgetApp(App):
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
-        self.config.get('MVG Widget', 'text')
+        self.config.get('MVG Widget', 'start')
+        self.config.get('MVG Widget', 'dest')
         float(self.config.get('MVG Widget', 'font_size'))
         #
         self.screen = MyScreen()
@@ -104,7 +105,7 @@ class MvgWidgetApp(App):
         """
         Set the default values for the configs sections.
         """
-        config.setdefaults('MVG Widget', {'text': 'Hello', 'font_size': 20})
+        config.setdefaults('MVG Widget', {'start': 'Dachau', 'dest': 'Forschungszentrum', 'font_size': 20})
 
     def build_settings(self, settings):
         """

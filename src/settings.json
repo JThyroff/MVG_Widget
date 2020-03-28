@@ -1,16 +1,23 @@
 [
   {
     "type": "string",
-    "title": "Label caption",
-    "desc": "Choose the text that appears in the label",
-    "section": "My Label",
-    "key": "text"
+    "title": "Start",
+    "desc": "Geben Sie hier ihren Startort an",
+    "section": "MVG Widget",
+    "key": "start"
+  },
+  {
+    "type": "string",
+    "title": "Ziel",
+    "desc": "Geben Sie hier ihren Zielort an",
+    "section": "MVG Widget",
+    "key": "dest"
   },
   {
     "type": "numeric",
-    "title": "Label font size",
-    "desc": "Choose the font size the label",
-    "section": "My Label",
+    "title": "Schriftgröße",
+    "desc": "Wählen Sie eine Schriftgröße",
+    "section": "MVG Widget",
     "key": "font_size"
   }
 ]
