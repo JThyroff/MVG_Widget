@@ -10,7 +10,7 @@ from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, ShaderTransition
 from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
@@ -39,6 +39,19 @@ class MyEntry:
 
 
 class MyScreen(ScreenManager):
+    fs: str
+
+    def load_shader(self):
+        file = open('fragmentShader.vert', mode='r')
+        self.fs = file.read()
+        file.close()
+
+    def __init__(self, **kwargs):
+        self.load_shader()
+        if 'transition' not in kwargs:
+            self.transition = ShaderTransition(fs=self.fs)
+        super(ScreenManager, self).__init__(**kwargs)
+        self.fbind('pos', self._update_pos)
 
     def get_by_id(self, w_id) -> Widget:
         # print(self.ids)
@@ -102,10 +115,7 @@ class MvgWidgetApp(App):
     def build(self):
         Window.size = (480, 320)
         self.settings_cls = SettingsWithNoMenu
-        # Window.bind(on_keyboard=self.keyboard_shortcut)
         # settings and config
-        # root = Builder.load_string(kv)
-        # label = root.ids.label
         Model.start_str = self.config.get('MVG Widget', 'start')
         Model.destination_str = self.config.get('MVG Widget', 'dest')
         Model.amount = int(self.config.get('MVG Widget', 'amount'))
@@ -154,30 +164,22 @@ class MvgWidgetApp(App):
                 global font_size
                 font_size = float(self.config.get('MVG Widget', 'font_size'))
 
-    """def keyboard_shortcut(self, win, scancode, *largs):
-        modifiers = largs[-1]
-        print(scancode)
-        if scancode == 58:
-            if not self.settings_opened:
-                self.display_settings()
-            else:
-                self.close_settings()
-    """
-
     def display_settings(self, settings):
-        self.settings_opened = True
+        if self.settings_opened:
+            return
         Logger.info("App.display_settings: {0}".format(settings))
+        self.settings_opened = True
         self.screen.current = 'settingsscreen'
-        # super(MvgWidgetApp, self).display_settings(settings)
+        return True
 
     def close_settings(self, settings=None):
-        self.settings_opened = False
+        if not self.settings_opened:
+            return
         Logger.info("App.close_settings: {0}".format(settings))
+        self.settings_opened = False
         self.screen.current = 'screen1'
-        # scr: Screen = self.screen.get_by_id('settingsscreen')
-        # scr.clear_widgets()
-        # super(MvgWidgetApp, self).close_settings(settings)
         # self._update(-1)
+        return True
 
     def _update(self, dt):
         Logger.info('App._update: updating data and view')
