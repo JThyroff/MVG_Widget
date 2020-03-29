@@ -88,7 +88,7 @@ class MyScreen(ScreenManager):
 
     def set_route(self, route: str):
         _lbl: Label = self.get_by_id('route_lbl')
-        _lbl.font_size = 20
+        _lbl.font_size = float(self.config.get('MVG Widget', 'font_size'))
         _lbl.text = routeStr.format(route)
 
 
@@ -102,9 +102,9 @@ class MvgWidgetApp(App):
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
-        self.config.get('MVG Widget', 'start')
-        self.config.get('MVG Widget', 'dest')
-        self.config.get('MVG Widget', 'amount')
+        Model.start = self.config.get('MVG Widget', 'start')
+        Model.destination_str = self.config.get('MVG Widget', 'dest')
+        Model.amount = self.config.get('MVG Widget', 'amount')
         float(self.config.get('MVG Widget', 'font_size'))
         #
         self.screen = MyScreen()
