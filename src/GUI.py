@@ -10,7 +10,7 @@ from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
@@ -97,10 +97,20 @@ class MyScreen(ScreenManager):
 class MvgWidgetApp(App):
     time = NumericProperty(0)
     screen: MyScreen = None
+    settings_opened: bool = False
 
     def build(self):
         Window.size = (480, 320)
-        self.settings_cls = MySettingsWithPanel
+        self.settings_cls = SettingsWithNoMenu
+
+        def keyboard_shortcut(self, win, scancode, *largs):
+            modifiers = largs[-1]
+            print(scancode)
+            if scancode == 101 and modifiers == ['ctrl']:
+                pass
+
+        Window.bind(on_keyboard=keyboard_shortcut)
+        Window.unbind()
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
@@ -125,6 +135,17 @@ class MvgWidgetApp(App):
 
     def build_settings(self, settings):
         settings.add_json_panel('MVG Widget', self.config, 'settings.json')
+        scr: Screen = self.screen.get_by_id('settingsscreen')
+        scr.add_widget(settings)
+        back: Button = Button(text="Push Me !",
+                              font_size="20sp",
+                              background_color=(1, 1, 1, 1),
+                              color=(1, 1, 1, 1),
+                              size=(32, 32),
+                              size_hint=(.2, .2),
+                              pos=(300, 250))
+        back.bind(on_release=self.close_settings)
+        scr.add_widget(back)
 
     def on_config_change(self, config, section, key, value):
         Logger.info("App.on_config_change: {0}, {1}, {2}, {3}".format(
@@ -141,13 +162,20 @@ class MvgWidgetApp(App):
                 global font_size
                 font_size = float(self.config.get('MVG Widget', 'font_size'))
 
+    def display_settings(self, settings):
+        Logger.info("App.display_settings: {0}".format(settings))
+        self.screen.current = 'settingsscreen'
+
     def close_settings(self, settings=None):
         Logger.info("App.close_settings: {0}".format(settings))
+        self.screen.current = 'screen1'
+        scr: Screen = self.screen.get_by_id('settingsscreen')
+        # scr.clear_widgets()
         super(MvgWidgetApp, self).close_settings(settings)
         self._update(-1)
 
     def _update(self, dt):
-        Logger.info('[Widget.update] updating data and view')
+        Logger.info('App._update: updating data and view')
         self.time = time()
         # route update
         self.screen.set_route(Model.get_route())
@@ -156,25 +184,3 @@ class MvgWidgetApp(App):
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
-
-
-class MySettingsWithPanel(SettingsWithNoMenu):
-    """
-    It is not usually necessary to create subclass of a settings panel. There
-    are many built-in types that you can use out of the box
-    (SettingsWithSidebar, SettingsWithSpinner etc.).
-
-    You would only want to create a Settings subclass like this if you want to
-    change the behavior or appearance of an existing Settings class.
-    """
-
-    def build(self):
-        self.add_widget(Button())
-
-    def on_close(self):
-        Logger.info("MySettingsWithPanel.on_close")
-
-    def on_config_change(self, config, section, key, value):
-        Logger.info(
-            "MySettingsWithPanel.on_config_change: "
-            "{0}, {1}, {2}, {3}".format(config, section, key, value))
