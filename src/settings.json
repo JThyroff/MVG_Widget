@@ -15,6 +15,13 @@
   },
   {
     "type": "numeric",
+    "title": "Anzahl der Verbindungen",
+    "desc": "Wählen Sie, wie viele Verbindungen das Widget anzeigen soll",
+    "section": "MVG Widget",
+    "key": "amount"
+  },
+  {
+    "type": "numeric",
     "title": "Schriftgröße",
     "desc": "Wählen Sie eine Schriftgröße",
     "section": "MVG Widget",

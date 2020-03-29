@@ -77,12 +77,12 @@ def get_route() -> str:
     return start_str + ' >> ' + destination_str
 
 
-def get_next_departures() -> List[MyEntry]:
+def get_next_departures(amount=3) -> List[MyEntry]:
     _now = datetime.now()
     _start = mvg_api.get_id_for_station(start_str)
     _dest = mvg_api.get_id_for_station(destination_str)
     _routes = mvg_api.get_route(_start, _dest, _now)
     _list: List[MyEntry] = []
-    for c in range(4):
+    for c in range(amount):
         _list.append(process_route(_routes[c]))
     return _list

@@ -18,7 +18,11 @@ import Model
 kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
+
 routeStr: str = '[size=30][color=44eeee]{}[/color][/size]'
+color_text: str = '[color=cccccc]'
+color_h_text: str = '[color=eeffaa]'
+color_close: str = '[/color]'
 
 
 class MyEntry:
@@ -57,9 +61,8 @@ class MyScreen(ScreenManager):
         _lbl_lbl.id = '_lbl_lbl'
         _lbl_lbl.size_hint_x = 0.3
         _lbl_lbl.markup = True
-        _lbl_lbl.text = '{} {}'.format(my_entry.label,
-                                       my_entry.destination)
-        # '[size=40][color=55bb33]{} {}[/color][/size]'.format(my_entry.label, my_entry.destination)
+        _lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
+        _lbl_lbl.font_size = 20
         _lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
         new_entry.add_widget(_lbl_lbl)
 
@@ -68,9 +71,10 @@ class MyScreen(ScreenManager):
         _time_lbl.id = '_time_lbl'
         _time_lbl.size_hint_x = 0.3
         _time_lbl.markup = True
-        _time_lbl.text = '{} >> {}'.format(my_entry.departure,
-                                           my_entry.arrival)
-        # '[size=60][color=55bb33]{} >> {}[/color][/size]'.format(my_entry.departure, my_entry.arrival)
+        _time_lbl.text = (color_h_text + '{}' + color_close + ' >> ').format(
+            my_entry.departure) + (color_h_text + '{}' + color_close).format(
+            my_entry.arrival)
+        _time_lbl.font_size = 20
         _time_lbl.pos_hint = {'right': 1, 'center_y': .5}
         new_entry.add_widget(_time_lbl)
 
@@ -94,6 +98,7 @@ class MvgWidgetApp(App):
         # label = root.ids.label
         self.config.get('MVG Widget', 'start')
         self.config.get('MVG Widget', 'dest')
+        self.config.get('MVG Widget', 'amount')
         float(self.config.get('MVG Widget', 'font_size'))
         #
         self.screen = MyScreen()
@@ -110,7 +115,7 @@ class MvgWidgetApp(App):
         """
         Set the default values for the configs sections.
         """
-        config.setdefaults('MVG Widget', {'start': 'Dachau', 'dest': 'Forschungszentrum', 'font_size': 20})
+        config.setdefaults('MVG Widget', {'start': 'Dachau', 'dest': 'Forschungszentrum', 'amount': 3, 'font_size': 20})
 
     def build_settings(self, settings):
         """
