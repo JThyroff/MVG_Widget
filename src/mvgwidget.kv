@@ -17,11 +17,24 @@
             padding: 5
             spacing: 5
 
-            Label:
-                id: routeLbl
-                name: 'routeLbl'
-                markup: True
-                size_hint: 1, 0.000001
+            FloatLayout:
+                id: floatLyt
+                name: 'floatLyt'
+                size_hint: 1, 0.1
+
+                Label:
+                    id: routeLbl
+                    name: 'routeLbl'
+                    markup: True
+                    size_hint: 0.8, 1
+                    pos_hint: {'x': 0, 'top': 1}
+
+                Button:
+                    size_hint: None, None
+                    size: '65dp', '40dp'
+                    text: 'Stg (F1)'
+                    on_release: app.open_settings()
+                    pos_hint: {'right':1, 'top': 1}
 
             BoxLayout:
                 id: bl
@@ -30,9 +43,3 @@
                 padding: 5
                 spacing: 5
                 size_hint: 1, 1
-
-            Button:
-                size_hint: None, None
-                size: '170dp', '48dp'
-                text: 'Settings (F1)'
-                on_release: app.open_settings()

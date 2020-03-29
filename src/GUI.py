@@ -19,7 +19,7 @@ kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
 
-routeStr: str = '[size=30][color=44eeee]{}[/color][/size]'
+routeStr: str = '[size=20][color=44eeee]{}[/color][/size]'
 color_text: str = '[color=cccccc]'
 color_h_text: str = '[color=eeffaa]'
 color_close: str = '[/color]'
@@ -63,7 +63,8 @@ class MyScreen(ScreenManager):
         _lbl_lbl.markup = True
         _lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
         _lbl_lbl.font_size = 20
-        _lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
+        _lbl_lbl.halign = 'left'
+        _lbl_lbl.pos_hint = {'center_x': .4, 'center_y': .5}
         new_entry.add_widget(_lbl_lbl)
 
         # add time Label
@@ -122,6 +123,26 @@ class MvgWidgetApp(App):
         Add our custom section to the default configuration object.
         """
         settings.add_json_panel('MVG Widget', self.config, 'settings.json')
+
+    def on_config_change(self, config, section, key, value):
+        """
+        Respond to changes in the configuration.
+        """
+        Logger.info("main.py: App.on_config_change: {0}, {1}, {2}, {3}".format(
+            config, section, key, value))
+
+        if section == "My Label":
+            if key == "text":
+                self.root.ids.label.text = value
+            elif key == 'font_size':
+                self.root.ids.label.font_size = float(value)
+
+    def close_settings(self, settings=None):
+        """
+        The settings panel has been closed.
+        """
+        Logger.info("main.py: App.close_settings: {0}".format(settings))
+        super(MvgWidgetApp, self).close_settings(settings)
 
     def _update(self, dt):
         print('updating data and view. ')
