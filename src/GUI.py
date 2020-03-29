@@ -19,7 +19,7 @@ kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
 
-routeStr: str = '[size=20][color=44eeee]{}[/color][/size]'
+routeStr: str = '[color=44eeee]{}[/color]'
 color_text: str = '[color=cccccc]'
 color_h_text: str = '[color=eeffaa]'
 color_close: str = '[/color]'
@@ -58,18 +58,22 @@ class MyScreen(ScreenManager):
 
         # add label Label
         _lbl_lbl = Label()
-        _lbl_lbl.id = '_lbl_lbl'
-        _lbl_lbl.size_hint_x = 0.3
+        _lbl_lbl.id = 'lbl_lbl'
+        _lbl_lbl.size_hint_x = 0.5
+        _lbl_lbl.size_hint_y = 1
         _lbl_lbl.markup = True
         _lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
         _lbl_lbl.font_size = 20
         _lbl_lbl.halign = 'left'
-        _lbl_lbl.pos_hint = {'center_x': .4, 'center_y': .5}
+        _lbl_lbl.valign = 'middle'
+        # _lbl_lbl.texture_size = new_entry.size
+        # _lbl_lbl.text_size = new_entry.size
+        _lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
         new_entry.add_widget(_lbl_lbl)
 
         # add time Label
         _time_lbl = Label()
-        _time_lbl.id = '_time_lbl'
+        _time_lbl.id = 'time_lbl'
         _time_lbl.size_hint_x = 0.3
         _time_lbl.markup = True
         _time_lbl.text = (color_h_text + '{}' + color_close + ' >> ').format(
@@ -83,7 +87,8 @@ class MyScreen(ScreenManager):
         pass
 
     def set_route(self, route: str):
-        _lbl: Label = self.get_by_id('routeLbl')
+        _lbl: Label = self.get_by_id('route_lbl')
+        _lbl.font_size = 20
         _lbl.text = routeStr.format(route)
 
 
@@ -113,34 +118,31 @@ class MvgWidgetApp(App):
         return self.screen
 
     def build_config(self, config):
-        """
-        Set the default values for the configs sections.
-        """
         config.setdefaults('MVG Widget', {'start': 'Dachau', 'dest': 'Forschungszentrum', 'amount': 3, 'font_size': 20})
 
     def build_settings(self, settings):
-        """
-        Add our custom section to the default configuration object.
-        """
         settings.add_json_panel('MVG Widget', self.config, 'settings.json')
 
     def on_config_change(self, config, section, key, value):
-        """
-        Respond to changes in the configuration.
-        """
         Logger.info("main.py: App.on_config_change: {0}, {1}, {2}, {3}".format(
             config, section, key, value))
 
-        if section == "My Label":
-            if key == "text":
-                self.root.ids.label.text = value
+        if section == "MVG Widget":
+            if key == "start":
+                Model.start_str = value
+            elif key == "dest":
+                Model.destination_str = value
+            elif key == "amount":
+                Model.amount = value
             elif key == 'font_size':
-                self.root.ids.label.font_size = float(value)
+                _time_lbl: Label = self.screen.get_by_id('time_lbl')
+                _time_lbl.font_size = value
+                _route_lbl: Label = self.screen.get_by_id('route_lbl')
+                _route_lbl.font_size = value
+                _lbl_lbl: Label = self.screen.get_by_id('lbl_lbl')
+                _lbl_lbl.font_size = value
 
     def close_settings(self, settings=None):
-        """
-        The settings panel has been closed.
-        """
         Logger.info("main.py: App.close_settings: {0}".format(settings))
         super(MvgWidgetApp, self).close_settings(settings)
 
@@ -157,14 +159,6 @@ class MvgWidgetApp(App):
 
 
 class MySettingsWithTabbedPanel(SettingsWithTabbedPanel):
-    """
-    It is not usually necessary to create subclass of a settings panel. There
-    are many built-in types that you can use out of the box
-    (SettingsWithSidebar, SettingsWithSpinner etc.).
-    You would only want to create a Settings subclass like this if you want to
-    change the behavior or appearance of an existing Settings class.
-    """
-
     def on_close(self):
         Logger.info("main.py: MySettingsWithTabbedPanel.on_close")
 
