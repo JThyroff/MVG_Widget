@@ -18,7 +18,7 @@ resources_dict = {
     "SBAHN": 'sbahn.png',
     "UBAHN": 'ubahn.png',
     "TRAM": 'tram.png',
-    "BAHN": 'regio.png',
+    "BAHN": 'regiohell.png',
     "FOOTWAY": 'walk.png',
 }
 

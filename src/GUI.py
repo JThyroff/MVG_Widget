@@ -23,6 +23,7 @@ routeStr: str = '[color=44eeee]{}[/color]'
 color_text: str = '[color=cccccc]'
 color_h_text: str = '[color=eeffaa]'
 color_close: str = '[/color]'
+font_size = 20
 
 
 class MyEntry:
@@ -57,38 +58,38 @@ class MyScreen(ScreenManager):
         new_entry.add_widget(img)
 
         # add label Label
-        _lbl_lbl = Label()
-        _lbl_lbl.id = 'lbl_lbl'
-        _lbl_lbl.size_hint_x = 0.5
-        _lbl_lbl.size_hint_y = 1
-        _lbl_lbl.markup = True
-        _lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
-        _lbl_lbl.font_size = 20
-        _lbl_lbl.halign = 'left'
-        _lbl_lbl.valign = 'middle'
-        # _lbl_lbl.texture_size = new_entry.size
-        # _lbl_lbl.text_size = new_entry.size
-        _lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
-        new_entry.add_widget(_lbl_lbl)
+        lbl_lbl = Label()
+        lbl_lbl.id = 'lbl_lbl'
+        lbl_lbl.size_hint_x = 0.5
+        lbl_lbl.size_hint_y = 1
+        lbl_lbl.markup = True
+        lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
+        lbl_lbl.font_size = font_size
+        lbl_lbl.halign = 'left'
+        lbl_lbl.valign = 'middle'
+        # lbl_lbl.texture_size = new_entry.size
+        # lbl_lbl.text_size = new_entry.size
+        lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
+        new_entry.add_widget(lbl_lbl)
 
         # add time Label
-        _time_lbl = Label()
-        _time_lbl.id = 'time_lbl'
-        _time_lbl.size_hint_x = 0.3
-        _time_lbl.markup = True
-        _time_lbl.text = (color_h_text + '{}' + color_close + ' >> ').format(
+        time_lbl = Label()
+        time_lbl.id = 'time_lbl'
+        time_lbl.size_hint_x = 0.3
+        time_lbl.markup = True
+        time_lbl.text = (color_h_text + '{}' + color_close + ' >> ').format(
             my_entry.departure) + (color_h_text + '{}' + color_close).format(
             my_entry.arrival)
-        _time_lbl.font_size = 20
-        _time_lbl.pos_hint = {'right': 1, 'center_y': .5}
-        new_entry.add_widget(_time_lbl)
+        time_lbl.font_size = font_size
+        time_lbl.pos_hint = {'right': 1, 'center_y': .5}
+        new_entry.add_widget(time_lbl)
 
         _my_box.add_widget(new_entry, 0)
         pass
 
     def set_route(self, route: str):
         _lbl: Label = self.get_by_id('route_lbl')
-        _lbl.font_size = float(self.config.get('MVG Widget', 'font_size'))
+        _lbl.font_size = font_size
         _lbl.text = routeStr.format(route)
 
 
@@ -98,14 +99,15 @@ class MvgWidgetApp(App):
 
     def build(self):
         Window.size = (480, 320)
-        self.settings_cls = MySettingsWithTabbedPanel
+        self.settings_cls = SettingsWithTabbedPanel
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
-        Model.start = self.config.get('MVG Widget', 'start')
+        Model.start_str = self.config.get('MVG Widget', 'start')
         Model.destination_str = self.config.get('MVG Widget', 'dest')
-        Model.amount = self.config.get('MVG Widget', 'amount')
-        float(self.config.get('MVG Widget', 'font_size'))
+        Model.amount = int(self.config.get('MVG Widget', 'amount'))
+        global font_size
+        font_size = float(self.config.get('MVG Widget', 'font_size'))
         #
         self.screen = MyScreen()
         Clock.schedule_interval(self._update, 60)
@@ -124,7 +126,7 @@ class MvgWidgetApp(App):
         settings.add_json_panel('MVG Widget', self.config, 'settings.json')
 
     def on_config_change(self, config, section, key, value):
-        Logger.info("main.py: App.on_config_change: {0}, {1}, {2}, {3}".format(
+        Logger.info("App.on_config_change: {0}, {1}, {2}, {3}".format(
             config, section, key, value))
 
         if section == "MVG Widget":
@@ -133,18 +135,15 @@ class MvgWidgetApp(App):
             elif key == "dest":
                 Model.destination_str = value
             elif key == "amount":
-                Model.amount = value
+                Model.amount = int(value)
             elif key == 'font_size':
-                _time_lbl: Label = self.screen.get_by_id('time_lbl')
-                _time_lbl.font_size = value
-                _route_lbl: Label = self.screen.get_by_id('route_lbl')
-                _route_lbl.font_size = value
-                _lbl_lbl: Label = self.screen.get_by_id('lbl_lbl')
-                _lbl_lbl.font_size = value
+                global font_size
+                font_size = float(self.config.get('MVG Widget', 'font_size'))
 
     def close_settings(self, settings=None):
-        Logger.info("main.py: App.close_settings: {0}".format(settings))
+        Logger.info("App.close_settings: {0}".format(settings))
         super(MvgWidgetApp, self).close_settings(settings)
+        self._update(-1)
 
     def _update(self, dt):
         print('updating data and view. ')
@@ -156,13 +155,3 @@ class MvgWidgetApp(App):
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
-
-
-class MySettingsWithTabbedPanel(SettingsWithTabbedPanel):
-    def on_close(self):
-        Logger.info("main.py: MySettingsWithTabbedPanel.on_close")
-
-    def on_config_change(self, config, section, key, value):
-        Logger.info(
-            "main.py: MySettingsWithTabbedPanel.on_config_change: "
-            "{0}, {1}, {2}, {3}".format(config, section, key, value))
