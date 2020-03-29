@@ -102,15 +102,7 @@ class MvgWidgetApp(App):
     def build(self):
         Window.size = (480, 320)
         self.settings_cls = SettingsWithNoMenu
-
-        def keyboard_shortcut(self, win, scancode, *largs):
-            modifiers = largs[-1]
-            print(scancode)
-            if scancode == 101 and modifiers == ['ctrl']:
-                pass
-
-        Window.bind(on_keyboard=keyboard_shortcut)
-        Window.unbind()
+        # Window.bind(on_keyboard=self.keyboard_shortcut)
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
@@ -162,17 +154,30 @@ class MvgWidgetApp(App):
                 global font_size
                 font_size = float(self.config.get('MVG Widget', 'font_size'))
 
+    """def keyboard_shortcut(self, win, scancode, *largs):
+        modifiers = largs[-1]
+        print(scancode)
+        if scancode == 58:
+            if not self.settings_opened:
+                self.display_settings()
+            else:
+                self.close_settings()
+    """
+
     def display_settings(self, settings):
+        self.settings_opened = True
         Logger.info("App.display_settings: {0}".format(settings))
         self.screen.current = 'settingsscreen'
+        # super(MvgWidgetApp, self).display_settings(settings)
 
     def close_settings(self, settings=None):
+        self.settings_opened = False
         Logger.info("App.close_settings: {0}".format(settings))
         self.screen.current = 'screen1'
-        scr: Screen = self.screen.get_by_id('settingsscreen')
+        # scr: Screen = self.screen.get_by_id('settingsscreen')
         # scr.clear_widgets()
-        super(MvgWidgetApp, self).close_settings(settings)
-        self._update(-1)
+        # super(MvgWidgetApp, self).close_settings(settings)
+        # self._update(-1)
 
     def _update(self, dt):
         Logger.info('App._update: updating data and view')
