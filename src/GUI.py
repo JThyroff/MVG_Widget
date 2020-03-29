@@ -57,7 +57,9 @@ class MyScreen(ScreenManager):
         _lbl_lbl.id = '_lbl_lbl'
         _lbl_lbl.size_hint_x = 0.3
         _lbl_lbl.markup = True
-        _lbl_lbl.text = '[size=40][color=55bb33]{} {}[/color][/size]'.format(my_entry.label, my_entry.destination)
+        _lbl_lbl.text = '{} {}'.format(my_entry.label,
+                                       my_entry.destination)
+        # '[size=40][color=55bb33]{} {}[/color][/size]'.format(my_entry.label, my_entry.destination)
         _lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
         new_entry.add_widget(_lbl_lbl)
 
@@ -66,7 +68,9 @@ class MyScreen(ScreenManager):
         _time_lbl.id = '_time_lbl'
         _time_lbl.size_hint_x = 0.3
         _time_lbl.markup = True
-        _time_lbl.text = '[size=60][color=55bb33]{} >> {}[/color][/size]'.format(my_entry.departure, my_entry.arrival)
+        _time_lbl.text = '{} >> {}'.format(my_entry.departure,
+                                           my_entry.arrival)
+        # '[size=60][color=55bb33]{} >> {}[/color][/size]'.format(my_entry.departure, my_entry.arrival)
         _time_lbl.pos_hint = {'right': 1, 'center_y': .5}
         new_entry.add_widget(_time_lbl)
 
@@ -83,6 +87,7 @@ class MvgWidgetApp(App):
     screen: MyScreen = None
 
     def build(self):
+        Window.size = (480, 320)
         self.settings_cls = MySettingsWithTabbedPanel
         # settings and config
         # root = Builder.load_string(kv)

@@ -31,17 +31,27 @@
                 spacing: 10
                 size_hint: 1, 1
 
-            Button:
-                size_hint: None, None
-                size: '170dp', '48dp'
-                text: 'Add Entry'
-                on_release: app.open_settings()
+            BoxLayout:
+                id: buttonbox
+                name: 'buttonbox'
+                orientation: 'horizontal'
+                padding: 20
+                spacing: 10
+                size_hint: 1, 0.2
+                height: '170dp'
+                width: '170dp'
 
-            Button:
-                size_hint: None, None
-                size: '170dp', '48dp'
-                text: 'Go to Settings Screen'
-                on_release: sm.current = 'screen2'
+                Button:
+                    size_hint: None, None
+                    size: '170dp', '48dp'
+                    text: 'Add Entry'
+                    on_release: app.open_settings()
+
+                Button:
+                    size_hint: None, None
+                    size: '170dp', '48dp'
+                    text: 'Go to Settings Screen'
+                    on_release: sm.current = 'screen2'
 
     Screen:
         id: screen2
