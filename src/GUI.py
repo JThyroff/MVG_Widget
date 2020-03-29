@@ -6,11 +6,12 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
+from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager
-from kivy.uix.settings import SettingsWithTabbedPanel
+from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
 import Model
@@ -99,7 +100,7 @@ class MvgWidgetApp(App):
 
     def build(self):
         Window.size = (480, 320)
-        self.settings_cls = SettingsWithTabbedPanel
+        self.settings_cls = MySettingsWithPanel
         # settings and config
         # root = Builder.load_string(kv)
         # label = root.ids.label
@@ -146,7 +147,7 @@ class MvgWidgetApp(App):
         self._update(-1)
 
     def _update(self, dt):
-        print('updating data and view. ')
+        Logger.info('[Widget.update] updating data and view')
         self.time = time()
         # route update
         self.screen.set_route(Model.get_route())
@@ -155,3 +156,25 @@ class MvgWidgetApp(App):
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
+
+
+class MySettingsWithPanel(SettingsWithNoMenu):
+    """
+    It is not usually necessary to create subclass of a settings panel. There
+    are many built-in types that you can use out of the box
+    (SettingsWithSidebar, SettingsWithSpinner etc.).
+
+    You would only want to create a Settings subclass like this if you want to
+    change the behavior or appearance of an existing Settings class.
+    """
+
+    def build(self):
+        self.add_widget(Button())
+
+    def on_close(self):
+        Logger.info("MySettingsWithPanel.on_close")
+
+    def on_config_change(self, config, section, key, value):
+        Logger.info(
+            "MySettingsWithPanel.on_config_change: "
+            "{0}, {1}, {2}, {3}".format(config, section, key, value))
