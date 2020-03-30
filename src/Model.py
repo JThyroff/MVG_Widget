@@ -4,6 +4,7 @@ from typing import List
 
 import mvg_api
 import requests
+from kivy import Logger
 
 from UI import MyEntry
 
@@ -99,8 +100,9 @@ def get_route() -> str:
 
 
 def get_next_departures() -> List[MyEntry]:
+    Logger.info("Model.get_next_departures: started")
     _now = datetime.now()
-    # _now = datetime(2020, 3, 30, 10, 50, 0, 0)
+    _now = datetime(2020, 3, 31, 16, 15, 0, 0)
     _list: List[MyEntry] = []
     try:
         _start = mvg_api.get_id_for_station(start_str)
@@ -110,8 +112,10 @@ def get_next_departures() -> List[MyEntry]:
         _routes = mvg_api.get_route(_start, _dest, _now)
         for c in range(amount):
             _list.append(process_route(_routes[c]))
+        Logger.info("Model.get_next_departures: normal fetch")
 
     except requests.exceptions.ConnectionError:
+        Logger.info("Model.get_next_departures: Connectionerror")
         # error entry
         _error_entry: MyEntry = MyEntry()
         _error_entry.img_ok_path = res_path + resources_dict.get("WARNING")
@@ -126,6 +130,7 @@ def get_next_departures() -> List[MyEntry]:
         _list.append(_error_entry)
         _list.append(_help_entry)
     except ValueError as verror:
+        Logger.info("Model.get_next_departures: Valueerror")
         # error entry
         _error_entry: MyEntry = MyEntry()
         _error_entry.img_ok_path = res_path + resources_dict.get("WARNING")
@@ -143,4 +148,5 @@ def get_next_departures() -> List[MyEntry]:
         _list.append(_error_entry)
         _list.append(_help_entry)
     finally:
+        Logger.info("Model.get_next_departures: finished!")
         return _list

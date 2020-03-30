@@ -140,6 +140,7 @@ class MvgWidgetApp(App):
     settings_opened: bool = False
 
     def build(self):
+        Logger.info("App.build:")
         Window.size = (480, 320)
         self.settings_cls = SettingsWithNoMenu
         # settings and config
@@ -159,9 +160,11 @@ class MvgWidgetApp(App):
         return self.screen
 
     def build_config(self, config):
+        Logger.info("App.build_config: {0}".format(config))
         config.setdefaults('MVG Widget', {'start': 'Dachau', 'dest': 'Forschungszentrum', 'amount': 3, 'font_size': 20})
 
     def build_settings(self, settings):
+        Logger.info("App.build_settings: {0}".format(settings))
         settings.add_json_panel('MVG Widget', self.config, 'settings.json')
         scr: Screen = self.screen.get_by_id('settingsscreen')
         scr.add_widget(settings)
@@ -192,17 +195,17 @@ class MvgWidgetApp(App):
                 font_size = float(self.config.get('MVG Widget', 'font_size'))
 
     def display_settings(self, settings):
+        Logger.info("App.display_settings: {0}".format(settings))
         if self.settings_opened:
             return
-        Logger.info("App.display_settings: {0}".format(settings))
         self.settings_opened = True
         self.screen.current = 'settingsscreen'
         return True
 
     def close_settings(self, settings=None):
+        Logger.info("App.close_settings: {0}".format(settings))
         if not self.settings_opened:
             return
-        Logger.info("App.close_settings: {0}".format(settings))
         self.settings_opened = False
         self.screen.current = 'screen1'
         self._update(-1)
@@ -210,6 +213,8 @@ class MvgWidgetApp(App):
 
     def _update(self, dt):
         Logger.info('App._update: updating data and view')
+        if self.settings_opened:
+            return
         self.time = time()
         # route update
         self.screen.set_route(Model.get_route())
