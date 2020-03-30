@@ -5,6 +5,7 @@ from kivy import Logger
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.metrics import cm
 from kivy.properties import NumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button
@@ -75,15 +76,19 @@ class MyScreen(ScreenManager):
         # add label Label
         lbl_lbl = Label()
         lbl_lbl.id = 'lbl_lbl'
-        lbl_lbl.size_hint_x = 0.5
-        lbl_lbl.size_hint_y = 1
+        lbl_lbl.size_hint = (0.4, None)
         lbl_lbl.markup = True
         lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
         lbl_lbl.font_size = font_size
         lbl_lbl.halign = 'left'
         lbl_lbl.valign = 'middle'
-        # lbl_lbl.texture_size = new_entry.size
-        # lbl_lbl.text_size = new_entry.size
+        lbl_lbl.texture_size = _my_box.size
+        lbl_lbl.text_size = _my_box.size
+        lbl_lbl.size = _my_box.size
+        print(lbl_lbl.texture_size)
+        print(lbl_lbl.text_size)
+        print(lbl_lbl.size)
+        lbl_lbl.shorten = True
         lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
         new_entry.add_widget(lbl_lbl)
 
