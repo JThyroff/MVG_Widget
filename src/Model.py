@@ -70,10 +70,12 @@ def process_connection(my_entry: MyEntry, connection):
 
 def check_notifications(connection_part_list) -> bool:
     for _connection in connection_part_list:
-        if _connection["notifications"] is None:
-            return False
-        else:
-            return True
+        try:
+            if _connection["notifications"] is not None:
+                return True
+        except:
+            pass
+    return False
 
 
 def process_route(route) -> MyEntry:

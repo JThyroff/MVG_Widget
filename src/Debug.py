@@ -123,4 +123,4 @@ def test(_start: str, _dest: str):
 
 
 if __name__ == '__main__':
-    test('Dachau', 'Forschungszentrum')
+    test('Dachau', 'Hauptbahnhof')
