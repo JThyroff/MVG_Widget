@@ -27,12 +27,14 @@ kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
 
-routeStr: str = '[color=44eeee]{}[/color]'
 color_text: str = '[color=cccccc]'
 color_h_text: str = '[color=eeffaa]'
-color_err_text: str = '[color=ff0000]'
-
 color_close: str = '[/color]'
+italic_open: str = '[i]'
+italic_close: str = '[/i]'
+
+routeStr: str = '[i][color=44eeee]{}[/color][/i]'
+
 font_size = 20
 
 
@@ -90,7 +92,11 @@ class MyScreen(ScreenManager):
         lbl_lbl.id = 'lbl_lbl'
         lbl_lbl.size_hint = (0.4, None)
         lbl_lbl.markup = True
-        lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
+        if my_entry.is_notifications:
+            lbl_lbl.text = (color_text + italic_open + '{} {}' + italic_close + color_close).format(my_entry.label,
+                                                                                                    my_entry.destination)
+        else:
+            lbl_lbl.text = (color_text + '{} {}' + color_close).format(my_entry.label, my_entry.destination)
         lbl_lbl.font_size = font_size
         lbl_lbl.halign = 'left'
         lbl_lbl.valign = 'middle'
@@ -107,9 +113,14 @@ class MyScreen(ScreenManager):
         time_lbl.id = 'time_lbl'
         time_lbl.size_hint_x = 0.3
         time_lbl.markup = True
-        time_lbl.text = (color_h_text + '{}' + color_close + ' >> ').format(
-            my_entry.departure) + (color_h_text + '{}' + color_close).format(
-            my_entry.arrival)
+        if my_entry.is_notifications:
+            time_lbl.text = (color_h_text + italic_open + '{}' + italic_close + color_close + ' >> ').format(
+                my_entry.departure) + (color_h_text + italic_open + '{}' + italic_close + color_close).format(
+                my_entry.arrival)
+        else:
+            time_lbl.text = (color_h_text + '{}' + color_close + ' >> ').format(
+                my_entry.departure) + (color_h_text + '{}' + color_close).format(
+                my_entry.arrival)
         time_lbl.font_size = font_size
         time_lbl.pos_hint = {'right': 1, 'center_y': .5}
         new_entry.add_widget(time_lbl)
