@@ -104,7 +104,7 @@ def print_route(route):
 def test():
     now = datetime.now()
     # for debug proposes
-    # now = datetime(2020, 2, 2, 19, 30, 0, 0)
+    now = datetime(2020, 3, 30, 17, 25, 0, 0)
     test_start = mvg_api.get_id_for_station('Dachau')
     test_dest = mvg_api.get_id_for_station('Forschungszentrum')
     print("ID test_start: ", test_start)
@@ -119,6 +119,6 @@ def test():
 
 
 if __name__ == '__main__':
-    # test()
+    test()
     _mvgWidgetApp = MvgWidgetApp()
     _mvgWidgetApp.run()
