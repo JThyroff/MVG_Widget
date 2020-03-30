@@ -5,7 +5,6 @@ from kivy import Logger
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.metrics import cm
 from kivy.properties import NumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button
@@ -82,14 +81,11 @@ class MyScreen(ScreenManager):
         lbl_lbl.font_size = font_size
         lbl_lbl.halign = 'left'
         lbl_lbl.valign = 'middle'
-        lbl_lbl.texture_size = _my_box.size
-        lbl_lbl.text_size = _my_box.size
-        lbl_lbl.size = _my_box.size
-        print(lbl_lbl.texture_size)
-        print(lbl_lbl.text_size)
-        print(lbl_lbl.size)
+        lbl_lbl.texture_size = Window.size
+        lbl_lbl.text_size = Window.size
+        lbl_lbl.size = Window.size
         lbl_lbl.shorten = True
-        lbl_lbl.pos_hint = {'center_x': .3, 'center_y': .5}
+        lbl_lbl.pos_hint = {'center_x': .65, 'center_y': .5}
         new_entry.add_widget(lbl_lbl)
 
         # add time Label
@@ -135,7 +131,6 @@ class MvgWidgetApp(App):
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
-
         return self.screen
 
     def build_config(self, config):
@@ -185,7 +180,7 @@ class MvgWidgetApp(App):
         Logger.info("App.close_settings: {0}".format(settings))
         self.settings_opened = False
         self.screen.current = 'screen1'
-        # self._update(-1)
+        self._update(-1)
         return True
 
     def _update(self, dt):
