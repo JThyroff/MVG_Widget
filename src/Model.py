@@ -5,7 +5,7 @@ from typing import List
 import mvg_api
 import requests
 
-from GUI import MyEntry
+from UI import MyEntry
 
 start_str = 'Dachau'
 destination_str = 'Forschungszentrum'
@@ -61,6 +61,14 @@ def process_connection(my_entry: MyEntry, connection):
     # set label
     get_transportation_label = label_switcher.get(my_entry.connection_type)
     get_transportation_label(my_entry, connection)
+
+
+def check_notifications(connection_part_list) -> bool:
+    for _connection in connection_part_list:
+        if _connection["notifications"] is None:
+            return False
+        else:
+            return True
 
 
 def process_route(route) -> MyEntry:

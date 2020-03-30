@@ -17,6 +17,12 @@ from kivy.uix.widget import Widget
 
 import Model
 
+"""
+This file contains everything needed for the userinterface.
+Objects of the class MyEntry are passed by the backend model to the frontend.
+MyScreen derives from SreenManager and provides the root widget for MvgWidgetApp
+"""
+
 kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 Window.fullscreen = False
@@ -37,10 +43,11 @@ class MyEntry:
     connection_type = None
     departure: str = None
     arrival: str = None
+    notifications: bool = None
 
 
 class MyScreen(ScreenManager):
-    fs: str
+    fs: str  # fragmentshader for custom screen transition. Currently unused
 
     def load_shader(self):
         file = open('fragmentShader.vert', mode='r')
@@ -81,6 +88,7 @@ class MyScreen(ScreenManager):
         lbl_lbl.font_size = font_size
         lbl_lbl.halign = 'left'
         lbl_lbl.valign = 'middle'
+        # TODO fix workaround
         lbl_lbl.texture_size = Window.size
         lbl_lbl.text_size = Window.size
         lbl_lbl.size = Window.size
@@ -193,3 +201,8 @@ class MvgWidgetApp(App):
         _departures = Model.get_next_departures()
         for el in _departures:
             self.screen.add_entry(el)
+
+
+if __name__ == '__main__':
+    _mvgWidgetApp = MvgWidgetApp()
+    _mvgWidgetApp.run()

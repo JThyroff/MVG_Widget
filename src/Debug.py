@@ -2,7 +2,11 @@ from datetime import datetime
 
 import mvg_api
 
-from src.GUI import MvgWidgetApp
+"""
+This file is for debug purposes. 
+Run test() to get the next few routes between _start and _dest printed on console.
+The server's JSON response will be processed accordingly.
+"""
 
 
 def print_bus(connection):
@@ -101,12 +105,12 @@ def print_route(route):
     return
 
 
-def test():
+def test(_start: str, _dest: str):
     now = datetime.now()
     # for debug proposes
-    now = datetime(2020, 3, 30, 17, 25, 0, 0)
-    test_start = mvg_api.get_id_for_station('Dachau')
-    test_dest = mvg_api.get_id_for_station('Forschungszentrum')
+    # now = datetime(2020, 3, 30, 17, 25, 0, 0)
+    test_start = mvg_api.get_id_for_station(_start)
+    test_dest = mvg_api.get_id_for_station(_dest)
     print("ID test_start: ", test_start)
     print("ID test_dest: ", test_dest)
     print("\n")
@@ -119,6 +123,4 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
-    _mvgWidgetApp = MvgWidgetApp()
-    _mvgWidgetApp.run()
+    test('Dachau', 'Forschungszentrum')
