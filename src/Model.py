@@ -20,6 +20,7 @@ resources_dict = {
     "TRAM": 'tram.png',
     "BAHN": 'regiohell.png',
     "FOOTWAY": 'walkhell.png',
+    "WARNING": 'warnung.png'
 }
 
 
@@ -82,10 +83,38 @@ def get_route() -> str:
 def get_next_departures() -> List[MyEntry]:
     _now = datetime.now()
     # _now = datetime(2020, 3, 30, 10, 50, 0, 0)
-    _start = mvg_api.get_id_for_station(start_str)
-    _dest = mvg_api.get_id_for_station(destination_str)
-    _routes = mvg_api.get_route(_start, _dest, _now)
     _list: List[MyEntry] = []
-    for c in range(amount):
-        _list.append(process_route(_routes[c]))
-    return _list
+    try:
+        _start = mvg_api.get_id_for_station(start_str)
+        _dest = mvg_api.get_id_for_station(destination_str)
+        if _start is None or _dest is None:
+            raise ValueError('Route nicht definiert.', _start, _dest)
+        _routes = mvg_api.get_route(_start, _dest, _now)
+        for c in range(amount):
+            _list.append(process_route(_routes[c]))
+
+    except ConnectionError:
+        _error_entry: MyEntry = MyEntry()
+        _error_entry.img_path = res_path + resources_dict.get("WARNING")
+        _error_entry.from_ = _error_entry.to_ = 'Fehler'
+        _error_entry.label = 'Übeprüfen Sie die Verbindung '
+        _list.append(_error_entry)
+    except ValueError as verror:
+        # error entry
+        _error_entry: MyEntry = MyEntry()
+        _error_entry.img_path = res_path + resources_dict.get("WARNING")
+        _error_entry.destination = '!'
+        if verror.args[1] is None:
+            _error_entry.label = 'Startort unbekannt'
+        elif verror.args[2] is None:
+            _error_entry.label = 'Zielort unbekannt'
+        # help entry
+        _help_entry: MyEntry = MyEntry()
+        _help_entry.img_path = res_path + resources_dict.get("WARNING")
+        _help_entry.destination = '!'
+        _help_entry.label = 'Überprüfe die Einstellungen'
+        # append
+        _list.append(_error_entry)
+        _list.append(_help_entry)
+    finally:
+        return _list
