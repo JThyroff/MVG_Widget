@@ -6,11 +6,12 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen, ShaderTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
@@ -49,7 +50,7 @@ class MyScreen(ScreenManager):
     def __init__(self, **kwargs):
         self.load_shader()
         if 'transition' not in kwargs:
-            self.transition = ShaderTransition(fs=self.fs)
+            self.transition = WipeTransition()  # ShaderTransition(fs=self.fs)
         super(ScreenManager, self).__init__(**kwargs)
         self.fbind('pos', self._update_pos)
 
@@ -139,15 +140,16 @@ class MvgWidgetApp(App):
         settings.add_json_panel('MVG Widget', self.config, 'settings.json')
         scr: Screen = self.screen.get_by_id('settingsscreen')
         scr.add_widget(settings)
-        back: Button = Button(text="Push Me !",
-                              font_size="20sp",
+
+        _al = AnchorLayout(padding=5, anchor_x='right', anchor_y='top')
+        back: Button = Button(text="close",
                               background_color=(1, 1, 1, 1),
                               color=(1, 1, 1, 1),
-                              size=(32, 32),
-                              size_hint=(.2, .2),
-                              pos=(300, 250))
+                              size=(65, 40),
+                              size_hint=(None, None))
         back.bind(on_release=self.close_settings)
-        scr.add_widget(back)
+        _al.add_widget(back)
+        scr.add_widget(_al)
 
     def on_config_change(self, config, section, key, value):
         Logger.info("App.on_config_change: {0}, {1}, {2}, {3}".format(
