@@ -30,20 +30,23 @@ Window.fullscreen = False
 routeStr: str = '[color=44eeee]{}[/color]'
 color_text: str = '[color=cccccc]'
 color_h_text: str = '[color=eeffaa]'
+color_err_text: str = '[color=ff0000]'
+
 color_close: str = '[/color]'
 font_size = 20
 
 
 class MyEntry:
     label = None
-    img_path = None
+    img_ok_path = None
+    img_N_path = None
     destination = None
-    from_ = None
-    to_ = None
+    from_stat = None
+    to_stat = None
     connection_type = None
     departure: str = None
     arrival: str = None
-    notifications: bool = None
+    is_notifications: bool = None
 
 
 class MyScreen(ScreenManager):
@@ -74,7 +77,10 @@ class MyScreen(ScreenManager):
         img = Image()
         img.id = 'img'
         img.size_hint_x = 0.13
-        img.source = my_entry.img_path
+        if my_entry.is_notifications:
+            img.source = my_entry.img_N_path
+        else:
+            img.source = my_entry.img_ok_path
         img.size = img.texture_size
         img.pos_hint = {'x': 0, 'center_y': .5}
         new_entry.add_widget(img)
