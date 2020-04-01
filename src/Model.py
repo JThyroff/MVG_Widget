@@ -118,7 +118,8 @@ def get_next_departures() -> List[MyEntry]:
         Logger.info("Model.get_next_departures: Connectionerror")
         # error entry
         _error_entry: MyEntry = MyEntry()
-        _error_entry.img_ok_path = res_path + resources_dict.get("WARNING")
+        _error_entry.img_ok_path = res_path + ok_path + resources_dict.get("WARNING") + ok_ext
+        _error_entry.img_N_path = res_path + notification_path + resources_dict.get("WARNING") + notification_ext
         _error_entry.label = 'Verbindungsfehler'
         _error_entry.destination = '.'
         # help entry
@@ -133,7 +134,8 @@ def get_next_departures() -> List[MyEntry]:
         Logger.info("Model.get_next_departures: Valueerror")
         # error entry
         _error_entry: MyEntry = MyEntry()
-        _error_entry.img_ok_path = res_path + resources_dict.get("WARNING")
+        _error_entry.img_ok_path = res_path + ok_path + resources_dict.get("WARNING") + ok_ext
+        _error_entry.img_N_path = res_path + notification_path + resources_dict.get("WARNING") + notification_ext
         _error_entry.destination = '!'
         if verror.args[1] is None:
             _error_entry.label = 'Startort unbekannt'
