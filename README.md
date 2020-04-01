@@ -8,6 +8,10 @@ The app fetches the data from the mvg server constantly and displays the first p
 
 ![Alt text](demo/Peek.gif?raw=true "peek.gif")
 
+
+
+![Alt text](demo/raspberryPi1?raw=true "RaspberryPi.jpg")
+
 The main screen displays the next few connections:
 
 ![Alt text](demo/screen1.png?raw=true "screen1.png")
