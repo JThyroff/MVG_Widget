@@ -146,7 +146,7 @@ class MvgWidgetApp(App):
         Window.size = (480, 320)
         self.settings_cls = SettingsWithNoMenu
         # settings and config
-        Model.start_str = "jijid"# self.config.get('MVG Widget', 'start')
+        Model.start_str = self.config.get('MVG Widget', 'start')
         Model.destination_str = self.config.get('MVG Widget', 'dest')
         Model.amount = int(self.config.get('MVG Widget', 'amount'))
         global font_size
