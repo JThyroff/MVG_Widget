@@ -25,7 +25,9 @@ MyScreen derives from SreenManager and provides the root widget for MvgWidgetApp
 
 kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
-Window.fullscreen = False
+Window.fullscreen = True
+Window.borderless = True
+
 
 color_text: str = '[color=cccccc]'
 color_h_text: str = '[color=eeffaa]'
@@ -144,7 +146,7 @@ class MvgWidgetApp(App):
         Window.size = (480, 320)
         self.settings_cls = SettingsWithNoMenu
         # settings and config
-        Model.start_str = self.config.get('MVG Widget', 'start')
+        Model.start_str = "jijid"# self.config.get('MVG Widget', 'start')
         Model.destination_str = self.config.get('MVG Widget', 'dest')
         Model.amount = int(self.config.get('MVG Widget', 'amount'))
         global font_size

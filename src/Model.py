@@ -102,7 +102,7 @@ def get_route() -> str:
 def get_next_departures() -> List[MyEntry]:
     Logger.info("Model.get_next_departures: started")
     _now = datetime.now()
-    _now = datetime(2020, 3, 31, 16, 15, 0, 0)
+    #_now = datetime(2020, 3, 31, 16, 15, 0, 0)
     _list: List[MyEntry] = []
     try:
         _start = mvg_api.get_id_for_station(start_str)
@@ -124,7 +124,8 @@ def get_next_departures() -> List[MyEntry]:
         _error_entry.destination = '.'
         # help entry
         _help_entry: MyEntry = MyEntry()
-        _help_entry.img_ok_path = res_path + resources_dict.get("WARNING")
+        _help_entry.img_ok_path = res_path + ok_path + resources_dict.get("WARNING") + ok_ext
+        _help_entry.img_N_path = res_path + notification_path + resources_dict.get("WARNING") + notification_ext
         _help_entry.destination = '.'
         _help_entry.label = 'WLAN überprüfen'
         # append
@@ -143,7 +144,8 @@ def get_next_departures() -> List[MyEntry]:
             _error_entry.label = 'Zielort unbekannt'
         # help entry
         _help_entry: MyEntry = MyEntry()
-        _help_entry.img_ok_path = res_path + resources_dict.get("WARNING")
+        _help_entry.img_ok_path = res_path + ok_path + resources_dict.get("WARNING") + ok_ext
+        _help_entry.img_N_path = res_path + notification_path + resources_dict.get("WARNING") + notification_ext
         _help_entry.destination = '!'
         _help_entry.label = 'Überprüfe die Einstellungen'
         # append
