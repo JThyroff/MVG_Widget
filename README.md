@@ -10,6 +10,10 @@ The app fetches the data from the mvg server constantly and displays the first p
 
 ![Alt text](demo/raspberryPi1.jpg?raw=true "raspberryPi.jpg")
 
+Fullscreen Support:
+
+![Alt text](demo/raspberryPiFullscreen.jpg?raw=true "raspberryPiFullscreen.jpg")
+
 The main screen displays the next few connections:
 
 ![Alt text](demo/screen1.png?raw=true "screen1.png")
