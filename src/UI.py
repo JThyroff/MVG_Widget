@@ -26,8 +26,8 @@ MyScreen derives from SreenManager and provides the root widget for MvgWidgetApp
 kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
 '''Set these two variables to false if problems with the fullscreen mode occur.'''
-Window.fullscreen = False
-Window.borderless = False
+Window.fullscreen = True
+Window.borderless = True
 
 
 color_text: str = '[color=cccccc]'
