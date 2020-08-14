@@ -20,7 +20,7 @@ import Model
 """
 This file contains everything needed for the userinterface.
 Objects of the class MyEntry are passed by the backend model to the frontend.
-MyScreen derives from SreenManager and provides the root widget for MvgWidgetApp
+MyScreen derives from SreenManager and provides the root widget for MvgWidgetApp.
 """
 
 kivy.require('1.11.0')
