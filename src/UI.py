@@ -25,8 +25,9 @@ MyScreen derives from SreenManager and provides the root widget for MvgWidgetApp
 
 kivy.require('1.11.0')
 # evtl nachher True oder 'auto'
-Window.fullscreen = True
-Window.borderless = True
+'''Set these two variables to false if problems with the fullscreen mode occur.'''
+Window.fullscreen = False
+Window.borderless = False
 
 
 color_text: str = '[color=cccccc]'
@@ -51,6 +52,7 @@ class MyEntry:
     departure: str = None
     arrival: str = None
     is_notifications: bool = None
+    is_successful: bool = False
 
 
 class MyScreen(ScreenManager):
@@ -140,6 +142,8 @@ class MvgWidgetApp(App):
     time = NumericProperty(0)
     screen: MyScreen = None
     settings_opened: bool = False
+    inet_available: bool = False
+    inet_state_changed: bool = False
 
     def build(self):
         Logger.info("App.build:")
@@ -153,7 +157,7 @@ class MvgWidgetApp(App):
         font_size = float(self.config.get('MVG Widget', 'font_size'))
         #
         self.screen = MyScreen()
-        Clock.schedule_interval(self._update, 60)
+        Clock.schedule_interval(self._update, 5)
         # set content
         self.screen.set_route(Model.get_route())
         _departures = Model.get_next_departures()
@@ -223,6 +227,25 @@ class MvgWidgetApp(App):
         # connection update
         self.screen.get_by_id('bl').clear_widgets()
         _departures = Model.get_next_departures()
+
+        # handle inet state
+        if len(_departures) == 0 or not _departures[0].is_successful:
+            if self.inet_available:
+                self.inet_available = False
+                self.inet_state_changed = True
+                Clock.unschedule(self._update)
+                Clock.schedule_interval(self._update, 5)
+            else:
+                self.inet_state_changed = False
+        else:
+            if not self.inet_available:
+                self.inet_available = True
+                self.inet_state_changed = True
+                Clock.unschedule(self._update)
+                Clock.schedule_interval(self._update, 60)
+            else:
+                self.inet_state_changed = False
+
         for el in _departures:
             self.screen.add_entry(el)
 

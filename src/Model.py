@@ -92,6 +92,7 @@ def process_route(route) -> MyEntry:
     to_return.is_notifications = check_notifications(_connection_part_list)
     to_return.departure = route["departure_datetime"].strftime("%H:%M")
     to_return.arrival = route["arrival_datetime"].strftime("%H:%M")
+    to_return.is_successful = True
     return to_return
 
 
@@ -102,7 +103,7 @@ def get_route() -> str:
 def get_next_departures() -> List[MyEntry]:
     Logger.info("Model.get_next_departures: started")
     _now = datetime.now()
-    #_now = datetime(2020, 3, 31, 16, 15, 0, 0)
+    # _now = datetime(2020, 3, 31, 16, 15, 0, 0)
     _list: List[MyEntry] = []
     try:
         _start = mvg_api.get_id_for_station(start_str)
